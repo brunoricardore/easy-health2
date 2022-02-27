@@ -17,7 +17,6 @@ const LoginBox = styled(Card)`
     width: 400px;
     display: flex;
     flex-direction: column;
-    justify-content: space-evenly;
     align-items: center;
     padding: 20px;
 
@@ -47,7 +46,13 @@ const LoginBox = styled(Card)`
             margin-top: 10px;
             color: #c1ab60;
         }
-        
+    }
+
+    @media (max-width: 600px) {
+        width: 100%;
+        height: 100%;
+        border-radius: 0;
+        justify-content: center;
     }
 
 `;
