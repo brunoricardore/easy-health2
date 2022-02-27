@@ -35,6 +35,18 @@ const InputGroup = styled.div`
         padding-left: 15px;
         font-family: 'Noto Sans Display', sans-serif;
         font-size: 14px;
+        transition: border .2s ease-in-out;
+    }
+
+    &.input-invalid {
+
+        label {
+            color: red;
+        }
+
+        input {
+            border: 1px solid red;
+        }    
     }
 
 `;
@@ -45,30 +57,29 @@ const InputErrorMessage = styled.small`
     font-family: 'Noto Sans Display', sans-serif;
 `;
 
-
-
-
 export const Input: React.FC<InputProps> = (props) => {
-    return (<InputGroup>
-        {props.label && <label htmlFor={props.id}>{props.label}</label>}
+    return (
+        <InputGroup className={`${props.inputError ? 'input-invalid' : 'input-valid'}`}>
+            {props.label && <label htmlFor={props.id}>{props.label}</label>}
 
-        <Controller
-            defaultValue={''}
-            control={props.control}
-            name={props.name}
-            rules={props.rules}
-            render={({ field }) => (
-                <input
-                    type={props.type || 'text'}
-                    {...props}
-                    {...field}
-                />
-            )}
-        />
+            <Controller
+                defaultValue={''}
+                control={props.control}
+                name={props.name}
+                rules={props.rules}
+                render={({ field }) => (
+                    <input
 
-        {
-            props.inputError && <InputErrorMessage>{props.inputError?.message || `${props.label} ${VALIDATION_MESSAGES[props.inputError?.type+'']}`}</InputErrorMessage>
-        }
-        
-    </InputGroup>)
+                        type={props.type || 'text'}
+                        {...props}
+                        {...field}
+                    />
+                )}
+            />
+
+            {
+                props.inputError && <InputErrorMessage>{props.inputError?.message || `${props.label} ${VALIDATION_MESSAGES[props.inputError?.type + '']}`}</InputErrorMessage>
+            }
+        </InputGroup>
+    )
 };

@@ -1,4 +1,4 @@
-import { InputHTMLAttributes, ReactNode } from "react";
+import { InputHTMLAttributes } from "react";
 import styled from "styled-components";
 
 interface ButtonProps extends InputHTMLAttributes<HTMLButtonElement> {
