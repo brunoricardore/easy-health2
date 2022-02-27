@@ -31,13 +31,13 @@ const LoginContainer = styled(CenteredContent)`
     background: url(${bg}) center/cover no-repeat ;
 `;
 
-export const Home: React.FC = () => {
+const Home: React.FC = () => {
 
     const { register, handleSubmit, control, formState: {errors} } = useForm<Partial<User>>(
         
     );
 
-    const login = (data) => console.log(data, errors);
+    const login = (data: Partial<User>) => console.log(data, errors);
 
     return (
         <LoginContainer>
@@ -59,3 +59,5 @@ export const Home: React.FC = () => {
         </LoginContainer>
     )
 };
+
+export default Home;
