@@ -1,15 +1,23 @@
 import { Outlet } from "react-router-dom";
+import styled from "styled-components";
 import Sidebar from "../components/Sidebar";
 import TopNav from "../components/TopNav";
 
+const Container = styled.div`
+
+    display: flex;
+
+`;
+
 
 const AppContainer: React.FC = () => (
-    <div className="app-container">
+    <div>
+        <TopNav />
 
-        <TopNav/>
-        <Sidebar />
-
-        <Outlet />
+        <Container>
+            <Sidebar />
+            <Outlet />
+        </Container>
     </div>
 );
 

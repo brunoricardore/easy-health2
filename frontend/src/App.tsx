@@ -1,4 +1,5 @@
 import { useRoutes } from "react-router"
+import UserProvider from "./store/user_context/UserContext";
 import { APP_ROUTES } from './utils/routes';
 
 function App() {
@@ -6,9 +7,11 @@ function App() {
   let routeElement = useRoutes(APP_ROUTES);
 
   return (
-    <div className="App">
-      {routeElement}
-    </div>
+    <UserProvider>
+      <div className="App">
+        {routeElement}
+      </div>
+    </UserProvider>
   )
 }
 
