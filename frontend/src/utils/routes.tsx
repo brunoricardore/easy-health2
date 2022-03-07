@@ -1,10 +1,11 @@
 import { lazy } from 'react';
 import { Navigate, RouteObject } from 'react-router-dom';
-import AppContainer from '../views/AppContainer';
-import Home from '../views/Home';
-import Schedule from '../views/Schedule';
 
-const Login = lazy(() => import('../views/Login'))
+const AppContainer = lazy(() => import('../views/AppContainer'));
+const Login = lazy(() => import('../views/Login'));
+const Home = lazy(() => import('../views/Home'));
+const Schedule = lazy(() => import('../views/Schedule'));
+const Register = lazy(() => import('../views/Register'));
 
 export const APP_ROUTES: RouteObject[] = [
 
@@ -19,7 +20,7 @@ export const APP_ROUTES: RouteObject[] = [
             {
                 path: '/schedule',
                 element: <Schedule />
-            }
+            },
         ]
     },
     {
@@ -27,7 +28,11 @@ export const APP_ROUTES: RouteObject[] = [
         element: <Login />,
     },
     {
+        path: '/register',
+        element: <Register />
+    },
+    {
         path: '*',
-        element: <Navigate to="/home" />
+        element: <Navigate to="" />
     }
 ]

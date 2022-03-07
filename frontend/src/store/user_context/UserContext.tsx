@@ -16,7 +16,7 @@ const UserProvider: React.FC<React.ReactNode> = ({ children }) => {
         email: 'brunoricardore@gmail.com',
         name: 'Bruno Ricardo',
         avatar: 'https://gravatar.com/avatar/1cdcfc535a?s=512&d=robohash',
-        birth_date: '1993-12-17'
+        birthDate: '1993-12-17'
     });
 
     const updateUser = (user: User) => {

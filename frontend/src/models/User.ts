@@ -1,9 +1,14 @@
 export default interface User {
     name: string;
     email: string;
+    mobilePhone?: string
     password?: string;
-    new_password?: string;
-    new_password_confirmation?: string;
+    newPassword?: string;
+    newPasswordConfirmation?: string;
     avatar?: string;
-    birth_date?: string;
+    birthDate?: string;
+    gender?: 'm'|'f';
+    student?: boolean;
+    state?: number;
+    city?: number;
 }

@@ -10,12 +10,13 @@ interface ButtonProps extends InputHTMLAttributes<HTMLButtonElement> {
 
 
 const StyledButton = styled.button<ButtonProps>`
-    color: #FFF;
+    color: ${props => props.variant === 'primary' ? '#FFF' : '#c1ab60'};
+    border: ${props => props.variant === 'primary' ? 'none' : '2px solid #c1ab60'};
     margin-top: 20px;
     width: 100%;
     background-color: ${
         props => props.variant === 'primary' ? '#c1ab60' :
-                 props.variant === 'secondary' ? '#f0f321'
+                 props.variant === 'secondary' ? 'transparent'
                  : 'black'    
     };
     padding: 0 40px;

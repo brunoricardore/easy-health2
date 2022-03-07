@@ -1,0 +1,3 @@
+[submodule "frontend/src/custom_libs/react-mask-input"]
+	path = frontend/src/custom_libs/react-mask-input
+	url = git@github.com:brunoricardore/react-input-mask.git
