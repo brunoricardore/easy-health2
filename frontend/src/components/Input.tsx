@@ -1,4 +1,4 @@
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes, useDebugValue } from "react";
 import {
   Control,
   Controller,
@@ -6,12 +6,9 @@ import {
   FieldValues,
   UseControllerProps,
 } from "react-hook-form";
-
+import InputMask, { InputState } from "react-input-mask";
 import styled from "styled-components";
-
 import { VALIDATION_MESSAGES } from "../utils/ValidationMessages";
-
-import InputMask from "react-input-mask";
 
 export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   label?: string;
@@ -19,11 +16,11 @@ export interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   name: string;
   rules?: UseControllerProps["rules"];
   inputError?: FieldError;
-  mask?: any;
-  beforeMask?: (state: any) => any;
+  mask?: string | (string | RegExp)[];
+  beforeMaskEvent?: (currentState: InputState, nextState: InputState) => void;
 }
 
-const InputGroup = styled.div`
+export const InputGroup = styled.div`
   margin-top: 10px;
   width: 100%;
 
@@ -60,7 +57,7 @@ const InputGroup = styled.div`
   }
 `;
 
-const InputErrorMessage = styled.small`
+export const InputErrorMessage = styled.small`
   color: red;
   font-size: 12px;
   font-family: "Noto Sans Display", sans-serif;
@@ -77,53 +74,41 @@ export const Input: React.FC<InputProps> = (props) => {
         </label>
       )}
 
-      {/* <Controller
-        defaultValue={""}
-        control={props.control}
-        name={props.name}
-        rules={props.rules}
-        render={({ field }) =>
-          props.mask ? (
-            <IMaskInput
-              mask={props.mask}
-              type={props.type || "text"}
-              value={field.value}
-              onBlur={(val: any) => {
-                console.dir(val.target.value);
-                console.log(props.control);
-              }}
-              onChange={(val: any) => {
-                console.dir(val.target.value);
-              }}
-            />
-          ) : (
-            <input type={props.type || "text"} {...props} {...field} />
-          )
-        }
-      /> */}
-
       <Controller
         defaultValue={""}
         control={props.control}
         name={props.name}
         rules={props.rules}
-        render={({ field }) =>
-          props.mask ? (
+        render={({ field }) => {
+          return props.mask ? (
             <InputMask
               maskPlaceholder={null}
-              value={field.value}
-              onChange={(e) => {
-                props.beforeMask ? props.beforeMask(e) : null;
-                field.onChange(e);
-              }}
               mask={props.mask}
-            >
-              <input type={props.type || "text"} />
-            </InputMask>
+              value={field.value}
+              onChange={field.onChange}
+              beforeMaskedStateChange={({ currentState, nextState }) => {
+                if (props.beforeMaskEvent && currentState) {
+                  props.beforeMaskEvent(currentState, nextState);
+                  return {
+                    ...nextState,
+                    selection: {
+                      end: currentState?.value.length + 1,
+                      start: currentState?.value.length + 1,
+                    },
+                    value: currentState?.value,
+                  };
+                }
+                return nextState;
+              }}
+            />
           ) : (
-            <input type={props.type || "text"} {...props} {...field} />
-          )
-        }
+            <input
+              type={props.type}
+              value={field.value}
+              onChange={field.onChange}
+            />
+          );
+        }}
       />
 
       {props.inputError && (

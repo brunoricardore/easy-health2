@@ -7,6 +7,7 @@ import bg from "../assets/images/login-bg.svg";
 import { Button } from "../components/Button";
 import { StyledCard } from "../components/Card";
 import { CenteredContent } from "../components/ConteredContent";
+import Datepicker from "../components/Datepicker";
 import { Input, InputProps } from "../components/Input";
 import User from "../models/User";
 
@@ -43,7 +44,7 @@ export const Register: React.FC = () => {
   const [user, setUser] = useState<User>();
 
   const [step, setStep] = useState<"personal" | "loginInfo">("personal");
-  const { control, handleSubmit, formState, getValues } = useForm();
+  const { control, handleSubmit, formState, getValues, setValue } = useForm();
 
   const stepSubmit = (data: Partial<User>) => {
     console.log(step, data);
@@ -92,19 +93,9 @@ const StepPersonalData: React.FC<RegisteStepProps> = (props) => {
   const FIXO_MASK = "(99) 9999-9999";
   const MOVEL_MASK = "(99) 99999-9999";
 
-  const [phoneMask, setPhoneMask] = useState("(99) 9999-9999");
-
-  const telefoneMask = (e: any) => {
-    const pure = e.currentTarget.value.replace(/[^0-9]/g, "");
-    console.log(pure);
-    console.log(props.control);
-
-    if (pure.length === 10 && phoneMask === FIXO_MASK) {
-      setPhoneMask(MOVEL_MASK);
-    } else {
-      setPhoneMask(FIXO_MASK);
-    }
-  };
+  const [phoneMask, setPhoneMask] = useState<
+    typeof FIXO_MASK | typeof MOVEL_MASK
+  >(FIXO_MASK);
 
   return (
     <div
@@ -118,20 +109,36 @@ const StepPersonalData: React.FC<RegisteStepProps> = (props) => {
           required
         />
       </div>
-      <div>
+      <div style={{ display: "flex", gap: 10 }}>
         <Input
           name="phone"
           control={props.control}
           label="Telefone"
           mask={phoneMask}
-          beforeMask={telefoneMask}
+          beforeMaskEvent={(currentState, nextState) => {
+            const rawValue = currentState.value.replace(/[\D]/g, "");
+            if (rawValue.length > 10) {
+              setPhoneMask(MOVEL_MASK);
+            } else {
+              setPhoneMask(FIXO_MASK);
+            }
+          }}
         />
-        <Input
+        <Datepicker
           name="birthDate"
           control={props.control}
           label="Data de nascimento"
           required
           type="date"
+        />
+      </div>
+      <div>
+        <Input
+          name="doc"
+          control={props.control}
+          label="CPF/CNPJ"
+          rules={{ required: true, minLength: 3 }}
+          mask={""}
         />
       </div>
     </div>
